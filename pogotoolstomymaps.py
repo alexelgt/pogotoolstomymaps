@@ -1,26 +1,3 @@
-'''
-Structure of the data:
-
-{
-    "gyms":
-        {
-            "guid_value":{"guid":guid_value,"lat":latitude_value,"lng":longitude_value,"name":name_value,...},
-            ...
-        },
-
-    "pokestops":
-        {
-            "guid_value":{"guid":guid_value,"lat":latitude_value,"lng":longitude_value,"name":name_value,...},
-            ...
-        }
-
-}
-
-When doing a for loop in data['gyms'] (for i in data['gyms']),
-in each iteration i is equal to guid_value. So to get the latitude of the element i
-inside that loop you have to write: data['gyms'][i]['lat']
-'''
-
 import json
 import sys
 
