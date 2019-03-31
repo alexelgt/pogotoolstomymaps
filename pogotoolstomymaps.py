@@ -45,12 +45,12 @@ if language == "es":
 elif language == "en":
     file_importtomymaps.write("<?xml version='1.0' encoding='utf-8' ?>\n<kml xmlns='http://www.opengis.net/kml/2.2'>\n  <Document>\n    <name>Portals</name>\n")
 
-for i in data['gyms']:
+for data_element in data['gyms']:
     # This is mainly if the file from Pogo Tools has generated the file in another encode. Also Google My Maps doesn't like the character "&"
-    data['gyms'][i]['name'] = data['gyms'][i]['name'].replace("â€œ", "“").replace("â€", "”").replace("Âª", "ª").replace("Â¡", "¡").replace("&", "and").replace("Ã±", "ñ").replace("Ã¡", "á").replace("Ã©", "é").replace("Ã­", "í").replace("Ã³", "ó").replace("Ãº", "ú").replace("Ã", "Á")
+    data['gyms'][data_element]['name'] = data['gyms'][data_element]['name'].replace("â€œ", "“").replace("â€", "”").replace("Âª", "ª").replace("Â¡", "¡").replace("&", "and").replace("Ã±", "ñ").replace("Ã¡", "á").replace("Ã©", "é").replace("Ã­", "í").replace("Ã³", "ó").replace("Ãº", "ú").replace("Ã", "Á")
 
     file_importtomymaps.write("      <Placemark>\n        <name>")
-    file_importtomymaps.write(str(data['gyms'][i]['name']))
+    file_importtomymaps.write(str(data['gyms'][data_element]['name']))
 
     if language == "es":
         file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>")
@@ -58,23 +58,23 @@ for i in data['gyms']:
         file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gim</value>")
 
     file_importtomymaps.write("\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q=")
-    file_importtomymaps.write(str(data['gyms'][i]['lat']))
+    file_importtomymaps.write(str(data['gyms'][data_element]['lat']))
     file_importtomymaps.write(",")
-    file_importtomymaps.write(str(data['gyms'][i]['lng']))
+    file_importtomymaps.write(str(data['gyms'][data_element]['lng']))
     file_importtomymaps.write("</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            ")
-    file_importtomymaps.write(str(data['gyms'][i]['lng']))
+    file_importtomymaps.write(str(data['gyms'][data_element]['lng']))
     file_importtomymaps.write(",")
-    file_importtomymaps.write(str(data['gyms'][i]['lat']))
+    file_importtomymaps.write(str(data['gyms'][data_element]['lat']))
     file_importtomymaps.write("\n          </coordinates>\n        </Point>\n      </Placemark>\n")
 
 
-for i in data['pokestops']:
-    data['pokestops'][i]['name'] = data['pokestops'][i]['name'].replace("â€œ", "“").replace("â€", "”").replace("Âª", "ª").replace("Â¡", "¡").replace("&", "and").replace("Ã±", "ñ").replace("Ã¡", "á").replace("Ã©", "é").replace("Ã­", "í").replace("Ã³", "ó").replace("Ãº", "ú").replace("Ã", "Á")
+for data_element in data['pokestops']:
+    data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace("â€œ", "“").replace("â€", "”").replace("Âª", "ª").replace("Â¡", "¡").replace("&", "and").replace("Ã±", "ñ").replace("Ã¡", "á").replace("Ã©", "é").replace("Ã­", "í").replace("Ã³", "ó").replace("Ãº", "ú").replace("Ã", "Á")
 
-    data['pokestops'][i]['name'] = data['pokestops'][i]['name'].replace("èœ¥èœ´èˆ‡é’è›™", "蜥蜴與青蛙")
+    data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace("èœ¥èœ´èˆ‡é’è›™", "蜥蜴與青蛙")
 
     file_importtomymaps.write("      <Placemark>\n        <name>")
-    file_importtomymaps.write(str(data['pokestops'][i]['name']))
+    file_importtomymaps.write(str(data['pokestops'][data_element]['name']))
 
     if language == "es":
         file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Poképarada</value>")
@@ -82,13 +82,13 @@ for i in data['pokestops']:
         file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>")
 
     file_importtomymaps.write("\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q=")
-    file_importtomymaps.write(str(data['pokestops'][i]['lat']))
+    file_importtomymaps.write(str(data['pokestops'][data_element]['lat']))
     file_importtomymaps.write(",")
-    file_importtomymaps.write(str(data['pokestops'][i]['lng']))
+    file_importtomymaps.write(str(data['pokestops'][data_element]['lng']))
     file_importtomymaps.write("</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            ")
-    file_importtomymaps.write(str(data['pokestops'][i]['lng']))
+    file_importtomymaps.write(str(data['pokestops'][data_element]['lng']))
     file_importtomymaps.write(",")
-    file_importtomymaps.write(str(data['pokestops'][i]['lat']))
+    file_importtomymaps.write(str(data['pokestops'][data_element]['lat']))
     file_importtomymaps.write("\n          </coordinates>\n        </Point>\n      </Placemark>\n")
 
 file_importtomymaps.write("  </Document>\n</kml>")
