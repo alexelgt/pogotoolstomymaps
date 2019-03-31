@@ -1,50 +1,40 @@
-//function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}
+/*==== Set data_global from input file ====*/
+var data_global;
 
-function pogotoolstomymaps() {
-    var input;
+//stores the output of a parsed JSON file
+const parsed = jsonText => JSON.parse(jsonText);
+//creates a new file reader object
+const fr = new FileReader();
 
-    if (typeof window.FileReader !== 'function') {
-        alert("The file API isn't supported on this browser yet.");
-        return;
+function handleFileSelect (evt) {
+  //function is called when input file is Selected
+  //calls FileReader object with file
+  fr.readAsText(evt.target.files[0])
+};
+
+fr.onload = e => {
+  //fuction runs when file is fully loaded
+  //parses file then makes a call to writeInfo to display info on page
+  data_global = parsed(e.target.result);
+};
+
+//event listener for file input
+document.getElementById('inputfile').addEventListener('change', handleFileSelect, false);
+/*== Set data_global from input file ==*/
+
+function pogotoolstomymaps() { 
+    file_string = convertFile(data_global);
+    var output_filename;
+    
+    if ( (document.getElementById("language").value) == "English" ) {
+        output_filename = "portals.kml";
     }
-
-    input = document.getElementById('fileinput');
-    if (!input) {
-        alert("File not found.");
+    else if ( (document.getElementById("language").value) == "Spanish" ) {
+        output_filename = "portales.kml";
     }
-    else if (!input.files) {
-        alert("This browser doesn't seem to support the `files` property of file inputs.");
-    }
-    else if (!input.files[0]) {
-        alert("Please select a file before clicking 'Convert'");
-        return;
-    }
-    else {
-        var data = {};
-        $.ajax({
-            url: input.files[0].name,
-            dataType: 'json',
-            async: false,
-            success: function(json) {
-                //console.log(json);
-                data = json;
-            }
-        });
-
-        file_string = convertFile(data);
-
-        var output_filename;
-        if ( (document.getElementById("language").value) == "English" ) {
-            output_filename = "portals.kml";
-        }
-        else if ( (document.getElementById("language").value) == "Spanish" ) {
-            output_filename = "portales.kml";
-        }
-
-        writeFile(file_string, output_filename);
-    }
-  }
-
+    
+    writeFile(file_string, output_filename);
+}
 
 function convertFile(data) {
     var file_string;
@@ -98,7 +88,7 @@ function convertFile(data) {
 }
 
 function writeFile(file_string, output_filename) {
-    let file_data = "data:text/csv;charset=utf-8,";
+    let file_data = "data:text/json;charset=utf-8,";
     file_data += file_string;
     var encodedUri = encodeURI(file_data);
     var link = document.createElement("a");

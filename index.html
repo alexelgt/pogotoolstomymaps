@@ -14,7 +14,7 @@
     <form method="post">
       <fieldset>
         <h2>Pogo Tools to My Maps</h2>
-        <input type='file' id='fileinput'>
+        <input type="file" id="inputfile" accept=".json"/>
         <p>
             <span>Language</span>
             <select id="language">
@@ -23,7 +23,7 @@
             </select>
         </p>
         <p>
-            <input type='button' value='Convert' onclick='pogotoolstomymaps();'>
+            <input type='button' id='btnLoad' value='Convert' onclick='pogotoolstomymaps();'>
         </p>
       </fieldset>
     </form>
