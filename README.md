@@ -1,7 +1,7 @@
 # Pogo Tools to My Maps
 
-This Python script converts a json file exported from Pogo Tools (IITC plugin) to a kml file that can be imported to Google My Maps.
-***
+This script converts a json file exported from Pogo Tools (IITC plugin) to a kml file that can be imported to Google My Maps.
+# Python script
 ## How to use
 To run the code type ```python3 pogotoolstomymaps.py importportals.json language```
 
@@ -42,3 +42,8 @@ in each iteration i is equal to guid_value. So to get the latitude of the elemen
 inside that loop you have to write:
 
     data['gyms'][i]['lat']
+
+# Javascript script
+## How to use
+
+Go to [this page](https://pogotoolstomymaps.alexelgt.com), select a file and press the button **Convert**. After that the kml file will be automatically downloaded.
