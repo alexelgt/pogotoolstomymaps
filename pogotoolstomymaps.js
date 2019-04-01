@@ -1,40 +1,36 @@
 /*==== Set data_global from input file ====*/
 var data_global;
+var output_filename;
 
-//stores the output of a parsed JSON file
-const parsed = jsonText => JSON.parse(jsonText);
 //creates a new file reader object
 const fr = new FileReader();
 
 function handleFileSelect (evt) {
   //function is called when input file is Selected
   //calls FileReader object with file
-  fr.readAsText(evt.target.files[0])
+  fr.readAsText(evt.target.files[0]);
+
+  output_filename = evt.target.files[0].name.replace('.json', '.kml');
 };
 
 fr.onload = e => {
-  //fuction runs when file is fully loaded
-  //parses file then makes a call to writeInfo to display info on page
-  data_global = parsed(e.target.result);
+  //fuction runs when file is fully loaded.
+  data_global = JSON.parse(e.target.result);
 };
 
 //event listener for file input
 document.getElementById('inputfile').addEventListener('change', handleFileSelect, false);
 /*== Set data_global from input file ==*/
 
+/*==== Function called when the button is pressed ====*/
 function pogotoolstomymaps() { 
+    //get a string with the content of the kml file
     file_string = convertFile(data_global);
-    var output_filename;
-    
-    if ( (document.getElementById("language").value) == "English" ) {
-        output_filename = "portals.kml";
-    }
-    else if ( (document.getElementById("language").value) == "Spanish" ) {
-        output_filename = "portales.kml";
-    }
-    
+
+    //write that string into the output file
     writeFile(file_string, output_filename);
 }
+/*== Function called when the button is pressed ==*/
 
 function convertFile(data) {
     var file_string;
@@ -68,6 +64,8 @@ function convertFile(data) {
 
         data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
 
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('èœ¥èœ´èˆ‡é’è›™', '蜥蜴與青蛙');
+
         file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
         if ( (document.getElementById("language").value) == "English" ) {
             file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
@@ -94,7 +92,7 @@ function writeFile(file_string, output_filename) {
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", output_filename);
-    document.body.appendChild(link); // Required for FF
+    document.body.appendChild(link);
     link.click();
 }
 
