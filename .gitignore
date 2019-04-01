@@ -1,5 +1,4 @@
 .DS_Store
 __pycache__
-portales.kml
-portals.kml
-test.json
+*.kml
+*.json
