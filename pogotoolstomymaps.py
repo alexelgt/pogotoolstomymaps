@@ -52,10 +52,16 @@ for data_element in data['gyms']:
     file_importtomymaps.write("      <Placemark>\n        <name>")
     file_importtomymaps.write(str(data['gyms'][data_element]['name']))
 
-    if language == "es":
-        file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>")
-    elif language == "en":
-        file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gim</value>")
+    if 'isEx' in data['gyms'][data_element]:
+        if language == "es":
+            file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio EX</value>")
+        elif language == "en":
+            file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>EX Gim</value>")
+    else:
+        if language == "es":
+            file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>")
+        elif language == "en":
+            file_importtomymaps.write("</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gim</value>")
 
     file_importtomymaps.write("\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q=")
     file_importtomymaps.write(str(data['gyms'][data_element]['lat']))
