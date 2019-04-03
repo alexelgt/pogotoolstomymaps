@@ -47,12 +47,23 @@ function convertFile(data) {
         data['gyms'][data_element]['name'] = data['gyms'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
         file_string += "      <Placemark>\n        <name>" + data['gyms'][data_element]['name'];
 
-        if ( (document.getElementById("language").value) == "English" ) {
-            file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gim</value>";
+        if ( data['gyms'][data_element]['isEx'] == true) {
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>EX Gim</value>";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio EX</value>";
+            }
         }
-        else if ( (document.getElementById("language").value) == "Spanish" ) {
-            file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>";
+        else {
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gim</value>";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>";
+            }
         }
+        
         file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
                     + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng']
                     + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
