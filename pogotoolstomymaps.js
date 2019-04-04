@@ -33,8 +33,6 @@ function handleFilegeofences (evt) {
     };
 };
 
-
-
 //event listener for file input
 document.getElementById('inputfile').addEventListener('change', handleFileJSON, false);
 document.getElementById('geofencesfile').addEventListener('change', handleFilegeofences, false);
@@ -66,6 +64,46 @@ function convertFile_kml(data, data_geofences, output_filename) {
     else if ( (document.getElementById("language").value) == "Spanish" ) {
         file_string = "<?xml version='1.0' encoding='utf-8' ?>\n<kml xmlns='http://www.opengis.net/kml/2.2'>\n  <Document>\n    <name>Portales</name>\n";
     }
+
+    Object.keys(data['pokestops']).forEach(function (data_element) {
+
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
+
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('èœ¥èœ´èˆ‡é’è›™', '蜥蜴與青蛙');
+
+        if (data_geofences == undefined) {
+            file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Poképarada</value>";
+            }
+            file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
+                        + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng']
+                        + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
+                        + data['pokestops'][data_element]['lng'] + "," + data['pokestops'][data_element]['lat']
+                        + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
+        }
+        else {
+            Object.keys(data_geofences).forEach(function (data_geofences_element) {
+                if ( turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
+                    file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Poképarada</value>";
+                    }
+                    file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
+                                + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng']
+                                + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
+                                + data['pokestops'][data_element]['lng'] + "," + data['pokestops'][data_element]['lat']
+                                + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
+                }
+            });
+        }
+    });
 
     Object.keys(data['gyms']).forEach(function (data_element) {
         
@@ -129,46 +167,6 @@ function convertFile_kml(data, data_geofences, output_filename) {
         }
     });
 
-    Object.keys(data['pokestops']).forEach(function (data_element) {
-
-        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
-
-        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('èœ¥èœ´èˆ‡é’è›™', '蜥蜴與青蛙');
-
-        if (data_geofences == undefined) {
-            file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
-            if ( (document.getElementById("language").value) == "English" ) {
-                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
-            }
-            else if ( (document.getElementById("language").value) == "Spanish" ) {
-                file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Poképarada</value>";
-            }
-            file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
-                        + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng']
-                        + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
-                        + data['pokestops'][data_element]['lng'] + "," + data['pokestops'][data_element]['lat']
-                        + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
-        }
-        else {
-            Object.keys(data_geofences).forEach(function (data_geofences_element) {
-                if ( turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
-                    file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
-                    if ( (document.getElementById("language").value) == "English" ) {
-                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
-                    }
-                    else if ( (document.getElementById("language").value) == "Spanish" ) {
-                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Poképarada</value>";
-                    }
-                    file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
-                                + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng']
-                                + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
-                                + data['pokestops'][data_element]['lng'] + "," + data['pokestops'][data_element]['lat']
-                                + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
-                }
-            });
-        }
-    });
-
     file_string += "  </Document>\n</kml>";
 
     let file_data = "data:text/json;charset=utf-8,";
@@ -190,6 +188,35 @@ function convertFile_csv(data, data_geofences, output_filename) {
     else if ( (document.getElementById("language").value) == "Spanish" ) {
         file_string = "Nombre,Estado Pokémon GO,Latitude,Longitude\n";
     }
+
+    Object.keys(data['pokestops']).forEach(function (data_element) {
+
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
+
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('èœ¥èœ´èˆ‡é’è›™', '蜥蜴與青蛙');
+
+        if (data_geofences == undefined) {
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += data['pokestops'][data_element]['name'] + ",Poképarada," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+            }
+        }
+        else {
+            Object.keys(data_geofences).forEach(function (data_geofences_element) {
+                if ( turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += data['pokestops'][data_element]['name'] + ",Poképarada," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+                    }
+                }
+            });
+        }
+
+    });
 
     Object.keys(data['gyms']).forEach(function (data_element) {
         
@@ -236,35 +263,6 @@ function convertFile_csv(data, data_geofences, output_filename) {
             });
         }
  
-    });
-
-    Object.keys(data['pokestops']).forEach(function (data_element) {
-
-        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
-
-        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('èœ¥èœ´èˆ‡é’è›™', '蜥蜴與青蛙');
-
-        if (data_geofences == undefined) {
-            if ( (document.getElementById("language").value) == "English" ) {
-                file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
-            }
-            else if ( (document.getElementById("language").value) == "Spanish" ) {
-                file_string += data['pokestops'][data_element]['name'] + ",Poképarada," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
-            }
-        }
-        else {
-            Object.keys(data_geofences).forEach(function (data_geofences_element) {
-                if ( turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
-                    if ( (document.getElementById("language").value) == "English" ) {
-                        file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
-                    }
-                    else if ( (document.getElementById("language").value) == "Spanish" ) {
-                        file_string += data['pokestops'][data_element]['name'] + ",Poképarada," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
-                    }
-                }
-            });
-        }
-
     });
     
     let file_data = "data:text/csv;charset=utf-8,";
