@@ -6,16 +6,16 @@ var output_filename;
 const fr = new FileReader();
 
 function handleFileSelect (evt) {
-  //function is called when input file is Selected
-  //calls FileReader object with file
-  fr.readAsText(evt.target.files[0]);
+    //function is called when input file is Selected
+    //calls FileReader object with file
+    fr.readAsText(evt.target.files[0]);
 
-  output_filename = evt.target.files[0].name.replace('.json', '.kml');
+    output_filename = evt.target.files[0].name.replace('.json', '');
 };
 
 fr.onload = e => {
-  //fuction runs when file is fully loaded.
-  data_global = JSON.parse(e.target.result);
+    //fuction runs when file is fully loaded.
+    data_global = JSON.parse(e.target.result);
 };
 
 //event listener for file input
@@ -24,15 +24,22 @@ document.getElementById('inputfile').addEventListener('change', handleFileSelect
 
 /*==== Function called when the button is pressed ====*/
 function pogotoolstomymaps() { 
-    //get a string with the content of the kml file
-    file_string = convertFile(data_global);
 
-    //write that string into the output file
-    writeFile(file_string, output_filename);
+    //convert and write data into the output file
+    if ( (document.getElementById("exportformat").value) == "kml" ) {
+        convertFile_kml(data_global, output_filename);
+    }
+    else if ( (document.getElementById("exportformat").value) == "csv" ) {
+        convertFile_csv(data_global, output_filename);
+    }
+    else if ( (document.getElementById("exportformat").value) == "csv (Detective Pikachu)" ) {
+        convertFile_csv_detectivepikachu(data_global, output_filename);
+    }
+
 }
 /*== Function called when the button is pressed ==*/
 
-function convertFile(data) {
+function convertFile_kml(data, output_filename) {
     var file_string;
 
     if ( (document.getElementById("language").value) == "English" ) {
@@ -49,7 +56,7 @@ function convertFile(data) {
 
         if ( data['gyms'][data_element]['isEx'] == true) {
             if ( (document.getElementById("language").value) == "English" ) {
-                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>EX Gim</value>";
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>EX Gym</value>";
             }
             else if ( (document.getElementById("language").value) == "Spanish" ) {
                 file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio EX</value>";
@@ -57,7 +64,7 @@ function convertFile(data) {
         }
         else {
             if ( (document.getElementById("language").value) == "English" ) {
-                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gim</value>";
+                file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gym</value>";
             }
             else if ( (document.getElementById("language").value) == "Spanish" ) {
                 file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>";
@@ -93,17 +100,113 @@ function convertFile(data) {
 
     file_string += "  </Document>\n</kml>";
 
-    return file_string;
-}
-
-function writeFile(file_string, output_filename) {
     let file_data = "data:text/json;charset=utf-8,";
     file_data += file_string;
     var encodedUri = encodeURI(file_data);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", output_filename);
+    link.setAttribute("download", output_filename + ".kml");
     document.body.appendChild(link);
     link.click();
 }
 
+function convertFile_csv(data, output_filename) {
+    var file_string;
+
+    if ( (document.getElementById("language").value) == "English" ) {
+        file_string = "Name,Pokémon GO status,Latitude,Longitude\n";
+    }
+    else if ( (document.getElementById("language").value) == "Spanish" ) {
+        file_string = "Nombre,Estado Pokémon GO,Latitude,Longitude\n";
+    }
+
+    Object.keys(data['gyms']).forEach(function (data_element) {
+        
+        data['gyms'][data_element]['name'] = data['gyms'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
+
+        if ( data['gyms'][data_element]['isEx'] == true) {
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += data['gyms'][data_element]['name'] + ",EX Gym," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += data['gyms'][data_element]['name'] + ",Gimnasio EX," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+            }
+        }
+        else {
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += data['gyms'][data_element]['name'] + ",Gym," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += data['gyms'][data_element]['name'] + ",Gimnasio," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+            }
+        }
+ 
+    });
+
+    Object.keys(data['pokestops']).forEach(function (data_element) {
+
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
+
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('èœ¥èœ´èˆ‡é’è›™', '蜥蜴與青蛙');
+
+        if ( (document.getElementById("language").value) == "English" ) {
+            file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+        }
+        else if ( (document.getElementById("language").value) == "Spanish" ) {
+            file_string += data['pokestops'][data_element]['name'] + ",Poképarada," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+        }
+
+    });
+    
+    let file_data = "data:text/csv;charset=utf-8,";
+    file_data += file_string;
+    var encodedUri = encodeURI(file_data);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", output_filename + ".csv");
+    document.body.appendChild(link);
+    link.click();
+}
+
+function convertFile_csv_detectivepikachu(data, output_filename) {
+    var file_string;
+
+    if ( (document.getElementById("language").value) == "English" ) {
+        file_string = "Name,Latitude,Longitude,Keywords,Tags,Zones\n";
+    }
+    else if ( (document.getElementById("language").value) == "Spanish" ) {
+        file_string = "Nombre,Latitud,Longitud,Palabras clave,Etiquetas,Zonas\n";
+    }
+
+    Object.keys(data['gyms']).forEach(function (data_element) {
+        
+        data['gyms'][data_element]['name'] = data['gyms'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
+
+        if ( data['gyms'][data_element]['isEx'] == true) {
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",ex,\n";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",ex,\n";
+            }
+        }
+        else {
+            if ( (document.getElementById("language").value) == "English" ) {
+                file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",,\n";
+            }
+            else if ( (document.getElementById("language").value) == "Spanish" ) {
+                file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",,\n";
+            }
+        }
+ 
+    });
+    
+    let file_data = "data:text/csv;charset=utf-8,";
+    file_data += file_string;
+    var encodedUri = encodeURI(file_data);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", output_filename + ".csv");
+    document.body.appendChild(link);
+    link.click();
+}
