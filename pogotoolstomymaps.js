@@ -2,6 +2,7 @@
 var data_global_json;
 var data_global_geofences;
 var output_filename;
+var temp_output_filename;
 
 //creates a new file reader object
 const fr = new FileReader();
@@ -12,7 +13,8 @@ function handleFileJSON (evt) {
     //calls FileReader object with file
     fr.readAsText(evt.target.files[0]);
 
-    output_filename = evt.target.files[0].name.replace('.json', '');
+    temp_output_filename = evt.target.files[0].name.replace('.json', '');
+    output_filename = temp_output_filename;
 
     fr.onload = e => {
         //fuction runs when file is fully loaded.
@@ -24,6 +26,8 @@ function handleFilegeofences (evt) {
     //function is called when input file is Selected
     //calls FileReader object with file
     fr2.readAsText(evt.target.files[0]);
+
+    output_filename = temp_output_filename + "_" + evt.target.files[0].name.replace('.json', '');
 
     
 
