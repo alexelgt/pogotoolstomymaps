@@ -86,22 +86,26 @@ function convertFile_kml(data, data_geofences, output_filename) {
                         + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
         }
         else {
+            var ingeofence_pokestop_kml = false;
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
                 if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lat'], data['pokestops'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
-                    file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
-                    if ( (document.getElementById("language").value) == "English" ) {
-                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
-                    }
-                    else if ( (document.getElementById("language").value) == "Spanish" ) {
-                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Poképarada</value>";
-                    }
-                    file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
-                                + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng']
-                                + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
-                                + data['pokestops'][data_element]['lng'] + "," + data['pokestops'][data_element]['lat']
-                                + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
+                    ingeofence_pokestop_kml = true;
                 }
             });
+            if (ingeofence_pokestop_kml == true) {
+                file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
+                if ( (document.getElementById("language").value) == "English" ) {
+                    file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
+                }
+                else if ( (document.getElementById("language").value) == "Spanish" ) {
+                    file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Poképarada</value>";
+                }
+                file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
+                            + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng']
+                            + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
+                            + data['pokestops'][data_element]['lng'] + "," + data['pokestops'][data_element]['lat']
+                            + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
+            }
         }
     });
 
@@ -136,34 +140,38 @@ function convertFile_kml(data, data_geofences, output_filename) {
                         + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
         }
         else {
+            var ingeofence_gym_kml = false;
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
                 if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lat'], data['gyms'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
-                    file_string += "      <Placemark>\n        <name>" + data['gyms'][data_element]['name'];
-
-                    if ( data['gyms'][data_element]['isEx'] == true) {
-                        if ( (document.getElementById("language").value) == "English" ) {
-                            file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>EX Gym</value>";
-                        }
-                        else if ( (document.getElementById("language").value) == "Spanish" ) {
-                            file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio EX</value>";
-                        }
-                    }
-                    else {
-                        if ( (document.getElementById("language").value) == "English" ) {
-                            file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gym</value>";
-                        }
-                        else if ( (document.getElementById("language").value) == "Spanish" ) {
-                            file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>";
-                        }
-                    }
-                    
-                    file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
-                                + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng']
-                                + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
-                                + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['lat']
-                                + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
+                    ingeofence_gym_kml = true;
                 }
             });
+            if (ingeofence_gym_kml == true) {
+                file_string += "      <Placemark>\n        <name>" + data['gyms'][data_element]['name'];
+
+                if ( data['gyms'][data_element]['isEx'] == true) {
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>EX Gym</value>";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio EX</value>";
+                    }
+                }
+                else {
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Gym</value>";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += "</name>\n        <ExtendedData>\n          <Data name='Estado Pokémon GO'>\n            <value>Gimnasio</value>";
+                    }
+                }
+                
+                file_string += "\n          </Data>\n          <Data name='Google Maps'>\n            <value>https://maps.google.com/?q="
+                            + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng']
+                            + "</value>\n          </Data>\n        </ExtendedData>\n        <Point>\n          <coordinates>\n            "
+                            + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['lat']
+                            + "\n          </coordinates>\n        </Point>\n      </Placemark>\n";
+            }
         }
     });
 
@@ -204,16 +212,20 @@ function convertFile_csv(data, data_geofences, output_filename) {
             }
         }
         else {
+            var ingeofence_pokestop_csv = false;
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
                 if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lat'], data['pokestops'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
-                    if ( (document.getElementById("language").value) == "English" ) {
-                        file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
-                    }
-                    else if ( (document.getElementById("language").value) == "Spanish" ) {
-                        file_string += data['pokestops'][data_element]['name'] + ",Poképarada," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
-                    }
+                    ingeofence_pokestop_csv = true;
                 }
             });
+            if (ingeofence_pokestop_csv == true) {
+                if ( (document.getElementById("language").value) == "English" ) {
+                    file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+                }
+                else if ( (document.getElementById("language").value) == "Spanish" ) {
+                    file_string += data['pokestops'][data_element]['name'] + ",Poképarada," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
+                }
+            }
         }
 
     });
@@ -241,26 +253,30 @@ function convertFile_csv(data, data_geofences, output_filename) {
             }            
         }
         else {
+            var ingeofence_gym_csv = false;
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
                 if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lat'], data['gyms'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
-                    if ( data['gyms'][data_element]['isEx'] == true) {
-                        if ( (document.getElementById("language").value) == "English" ) {
-                            file_string += data['gyms'][data_element]['name'] + ",EX Gym," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
-                        }
-                        else if ( (document.getElementById("language").value) == "Spanish" ) {
-                            file_string += data['gyms'][data_element]['name'] + ",Gimnasio EX," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
-                        }
-                    }
-                    else {
-                        if ( (document.getElementById("language").value) == "English" ) {
-                            file_string += data['gyms'][data_element]['name'] + ",Gym," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
-                        }
-                        else if ( (document.getElementById("language").value) == "Spanish" ) {
-                            file_string += data['gyms'][data_element]['name'] + ",Gimnasio," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
-                        }
-                    }
+                    ingeofence_gym_csv = true;
                 }
             });
+            if (ingeofence_gym_csv == true) {
+                if ( data['gyms'][data_element]['isEx'] == true) {
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += data['gyms'][data_element]['name'] + ",EX Gym," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += data['gyms'][data_element]['name'] + ",Gimnasio EX," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+                    }
+                }
+                else {
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += data['gyms'][data_element]['name'] + ",Gym," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += data['gyms'][data_element]['name'] + ",Gimnasio," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
+                    }
+                }
+            }
         }
  
     });
@@ -279,56 +295,59 @@ function convertFile_csv_detectivepikachu(data, data_geofences, output_filename)
     var file_string;
 
     if ( (document.getElementById("language").value) == "English" ) {
-        file_string = "Name,Latitude,Longitude,Keywords,Tags,Zones\n";
+        file_string = "Name	Latitude	Longitude	Keywords	Tags	Zones\n";
     }
     else if ( (document.getElementById("language").value) == "Spanish" ) {
-        file_string = "Nombre,Latitud,Longitud,Palabras clave,Etiquetas,Zonas\n";
+        file_string = "Nombre	Latitud	Longitud	Palabras clave	Etiquetas	Zonas\n";
     }
 
     Object.keys(data['gyms']).forEach(function (data_element) {
         
         data['gyms'][data_element]['name'] = data['gyms'][data_element]['name'].replace('â€œ', '“').replace('â€', '”').replace('Âª', 'ª').replace('Â¡', '¡').replace('&', 'and').replace('Ã±', 'ñ').replace('Ã¡', 'á').replace('Ã©', 'é').replace('Ã­', 'í').replace('Ã³', 'ó').replace('Ãº', 'ú').replace('Ã', 'Á');
 
-
         if (data_geofences == undefined) {
             if ( data['gyms'][data_element]['isEx'] == true) {
                 if ( (document.getElementById("language").value) == "English" ) {
-                    file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",ex,\n";
+                    file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "	ex	\n";
                 }
                 else if ( (document.getElementById("language").value) == "Spanish" ) {
-                    file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",ex,\n";
+                    file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "	ex	\n";
                 }
             }
             else {
                 if ( (document.getElementById("language").value) == "English" ) {
-                    file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",,\n";
+                    file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "		\n";
                 }
                 else if ( (document.getElementById("language").value) == "Spanish" ) {
-                    file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",,\n";
+                    file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "		\n";
                 }
             }
         }
         else {
+            var zone = "";
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
                 if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lat'], data['gyms'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
-                    if ( data['gyms'][data_element]['isEx'] == true) {
-                        if ( (document.getElementById("language").value) == "English" ) {
-                            file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",ex," + data_geofences_element + "\n";
-                        }
-                        else if ( (document.getElementById("language").value) == "Spanish" ) {
-                            file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",ex," + data_geofences_element + "\n";
-                        }
-                    }
-                    else {
-                        if ( (document.getElementById("language").value) == "English" ) {
-                            file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",," + data_geofences_element + "\n";
-                        }
-                        else if ( (document.getElementById("language").value) == "Spanish" ) {
-                            file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",," + data_geofences_element + "\n";
-                        }
-                    }                   
+                    zone += data_geofences_element + ","
                 }
             });
+            if (zone != "") {
+                if ( data['gyms'][data_element]['isEx'] == true) {
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "	ex	" + zone + "\n";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "	ex	" + zone + "\n";
+                    }
+                }
+                else {
+                    if ( (document.getElementById("language").value) == "English" ) {
+                        file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "		" + zone + "\n";
+                    }
+                    else if ( (document.getElementById("language").value) == "Spanish" ) {
+                        file_string += data['gyms'][data_element]['name'] + "	" + data['gyms'][data_element]['lat'] + "	" + data['gyms'][data_element]['lng'] + "	" + data['gyms'][data_element]['name'] + "		" + zone + "\n";
+                    }
+                }
+            }
         }
 
     });
