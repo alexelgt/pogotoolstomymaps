@@ -87,7 +87,7 @@ function convertFile_kml(data, data_geofences, output_filename) {
         }
         else {
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
-                if ( turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
+                if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lat'], data['pokestops'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
                     file_string += "      <Placemark>\n        <name>" + data['pokestops'][data_element]['name'];
                     if ( (document.getElementById("language").value) == "English" ) {
                         file_string += "</name>\n        <ExtendedData>\n          <Data name='Pokémon GO status'>\n            <value>Pokestop</value>";
@@ -137,7 +137,7 @@ function convertFile_kml(data, data_geofences, output_filename) {
         }
         else {
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
-                if ( turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
+                if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lat'], data['gyms'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
                     file_string += "      <Placemark>\n        <name>" + data['gyms'][data_element]['name'];
 
                     if ( data['gyms'][data_element]['isEx'] == true) {
@@ -205,7 +205,7 @@ function convertFile_csv(data, data_geofences, output_filename) {
         }
         else {
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
-                if ( turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
+                if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lng'], data['pokestops'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['pokestops'][data_element]['lat'], data['pokestops'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
                     if ( (document.getElementById("language").value) == "English" ) {
                         file_string += data['pokestops'][data_element]['name'] + ",Pokestop," + data['pokestops'][data_element]['lat'] + "," + data['pokestops'][data_element]['lng'] + "\n";
                     }
@@ -242,7 +242,7 @@ function convertFile_csv(data, data_geofences, output_filename) {
         }
         else {
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
-                if ( turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
+                if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lat'], data['gyms'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
                     if ( data['gyms'][data_element]['isEx'] == true) {
                         if ( (document.getElementById("language").value) == "English" ) {
                             file_string += data['gyms'][data_element]['name'] + ",EX Gym," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "\n";
@@ -310,7 +310,7 @@ function convertFile_csv_detectivepikachu(data, data_geofences, output_filename)
         }
         else {
             Object.keys(data_geofences).forEach(function (data_geofences_element) {
-                if ( turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_global_geofences[data_geofences_element]['geofence']])) == true ) {
+                if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lng'], data['gyms'][data_element]['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data['gyms'][data_element]['lat'], data['gyms'][data_element]['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) == true) ) ) {
                     if ( data['gyms'][data_element]['isEx'] == true) {
                         if ( (document.getElementById("language").value) == "English" ) {
                             file_string += data['gyms'][data_element]['name'] + "," + data['gyms'][data_element]['lat'] + "," + data['gyms'][data_element]['lng'] + "," + data['gyms'][data_element]['name'] + ",ex," + data_geofences_element + "\n";
