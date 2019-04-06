@@ -11,6 +11,7 @@ This script converts a json file exported from Pogo Tools (IITC plugin) to a kml
     * [csv](#csv)
     * [csv (Detective Pikachu)](#csv-detective-pikachu)
 * [Known issues](#known-issues)
+* [References](#references)
 
 # **Structure of the json file**
     {
@@ -37,7 +38,7 @@ inside that loop you have to write:
 
     data['gyms'][i]['lat']
 # **JavaScript script**
-Go to [this page](https://pogotoolstomymaps.alexelgt.com), select a file and press the button **Convert**. After that the kml file will be automatically downloaded.
+Go to [this page](https://pogotoolstomymaps.alexelgt.com), select a file and press the button **Convert**. After that the exported file will be automatically downloaded.
 
 # **Geofences file**
 If you want to filter your results by zones you can upload a geofences file with info about them. **This file is optional**.
@@ -121,3 +122,7 @@ If the file is run with one input, language is set to English (en).
 If the code is run without inputs, language is se to English (en) and the code will try to use the file _importportals.json_ as input.
 
 If you type ```python3 pogotoolstomymaps.py -h``` the code will show how to use the script (but it will tell what's been explained before).
+
+# **References**
+
+[1] [GitLab - Alfonso / pogo-s2](https://gitlab.com/AlfonsoML/pogo-s2/)
