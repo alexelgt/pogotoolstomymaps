@@ -4,46 +4,75 @@
 		  <meta name="title" content="Pogo Tools to My Maps">
       <meta name="keywords" content="Pogo Tools, My Maps">
       <meta name="description" content="Convert a json file exported from Pogo Tools (IITC plugin) to a kml file that can be imported to Google My Maps.">
-      <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport">
-      <meta content="yes" name="apple-mobile-web-app-capable">
+      <link rel="icon" sizes="192x192" href="icon_circle.png">
+      <link rel="apple-touch-icon-precomposed" href="icon.png">
+      <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no, viewport-fit=cover" name="viewport">
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link href="style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <h2>Pogo Tools to My Maps</h2>
-      <p>
-        <span>Pogo Tools file</span>
-        <input type="file" id="inputfile" accept=".json"/>
-      </p>
-      <p>
-        <span>Geofences file*</span>
-        <input type="file" id="geofencesfile" accept=".json"/>
-      </p>
-      <p>
-        <h6>*Optional</h6>
-      </p>
-      <p>
-        <span>Language</span>
-        <select id="language">
-          <option selected="selected">English</option>
-          <option>Spanish</option>
-        </select>
-      </p>
-      <p>
-        <span>Exported file</span>
-        <select id="exportformat">
-          <option selected="selected">kml</option>
-          <option>csv</option>
-          <option>csv (Detective Pikachu)</option>
-        </select>
-      </p>
-      <p>
-        <input type='button' id='btnLoad' value='Convert' onclick='pogotoolstomymaps();'>
-      </p>  
+    <div id="navbar">
+        <h1>Pogo Tools to My Maps</h1>
+    </div>
+
+    <div id="structure">
+      <div id="block">
+        <h2>Files</h2>
+        <div id="block_structure" class="block_files">
+          <div id="element">
+            <input type="file" name="inputfile" id="inputfile" class="inputfile" accept=".json"/>
+            <label for="inputfile"><img id="label_img" src="InputFile_icon.png">Pogo Tools: <span class="inputfile">select file</span></label>
+          </div>
+              
+          <div id="element">
+            <input type="file" name="geofencesfile" id="geofencesfile" class="inputfile" accept=".json"/>
+            <label for="geofencesfile"><img id="label_img" src="Geofence_icon.png">Geofences*: <span class="inputfile">select file</span></label>
+          </div>
+              
+        </div>
+      </div>
+
+      <div id="text_block" class="info">*Optional file</div>
+
+      <div id="block">
+        <h2>Language</h2>
+        <div id="block_structure">
+          <div id="element">
+            <div id="button_structure" class="language">
+              <div class="selected" onclick='setMode("English",this);'>English</div>
+              <div class="" onclick='setMode("Spanish",this);'>Spanish</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="block">
+        <h2>Exported file format</h2>
+        <div id="block_structure">
+          <div id="element">
+            <div id="button_structure" class="exported_file">
+              <div class="selected" onclick='setMode("kml",this);'>kml</div>
+              <div class="" onclick='setMode("csv",this);'>csv</div>
+              <div class="" onclick='setMode("csv (Detective Pikachu)",this);'>csv (Detective Pikachu)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="input_button_structure">
+        <button id='btngetexandblockedgyms' onclick='pogotoolstomymaps();'>Download exported file</button>
+      </div>
+
+    </div>
 
     <script src='turf.min.js'></script>
     <script src="jquery-3.1.1.min.js" type="text/javascript"></script>
     <script src="pogotoolstomymaps.js" type="text/javascript"></script>
+    <script src='custom-file-input.js'></script>
+    <script type='application/javascript'>
+      document.addEventListener("touchstart", function() {}, false);
+    </script>
 
   </body>
 </html>
