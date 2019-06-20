@@ -339,13 +339,13 @@ function downloadOutputFile(string, format, output_filename) {
 function correctEncodingInNames(data) {
     Object.keys(data['pokestops']).forEach(function (data_element) {
 
-        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace(/â€œ/g, '“').replace(/â€/g, '”').replace(/Âª/g, 'ª').replace(/Â¡/g, '¡').replace(/&/g, 'and').replace(/Ã±/g, 'ñ').replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í').replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã/g, 'Á');
+        data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace(/â€œ/g, '“').replace(/â€/g, '”').replace(/Âª/g, 'ª').replace(/Â¡/g, '¡').replace(/&/g, 'and').replace(/Ã±/g, 'ñ').replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í').replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã/g, 'Á').replace(/Ã¼/g, 'ü');
         
         data['pokestops'][data_element]['name'] = data['pokestops'][data_element]['name'].replace('èœ¥èœ´èˆ‡é’è›™', '蜥蜴與青蛙');
     });
 
     Object.keys(data['gyms']).forEach(function (data_element) {
         
-        data['gyms'][data_element]['name'] = data['gyms'][data_element]['name'].replace(/â€œ/g, '“').replace(/â€/g, '”').replace(/Âª/g, 'ª').replace(/Â¡/g, '¡').replace(/&/g, 'and').replace(/Ã±/g, 'ñ').replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í').replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã/g, 'Á');
+        data['gyms'][data_element]['name'] = data['gyms'][data_element]['name'].replace(/â€œ/g, '“').replace(/â€/g, '”').replace(/Âª/g, 'ª').replace(/Â¡/g, '¡').replace(/&/g, 'and').replace(/Ã±/g, 'ñ').replace(/Ã¡/g, 'á').replace(/Ã©/g, 'é').replace(/Ã­/g, 'í').replace(/Ã³/g, 'ó').replace(/Ãº/g, 'ú').replace(/Ã/g, 'Á').replace(/Ã¼/g, 'ü');
     });
 }
