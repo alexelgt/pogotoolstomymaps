@@ -14,7 +14,7 @@ const fr_geofencesfile = new FileReader();
 function handleFileJSON (evt) {
     fr_inputfile.readAsText(evt.target.files[0]);
 
-    temp_output_filename = evt.target.files[0].name.replace('.json', '');
+    temp_output_filename = evt.target.files[0].name.replace('.json', '').replace('.txt', '');
     output_filename = temp_output_filename;
 
     fr_inputfile.onload = e => {
