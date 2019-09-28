@@ -246,6 +246,7 @@ function convertFile_csv_detectivepikachu(data, data_geofences, output_filename)
                     zone += data_geofences_element + ","
                 }
             });
+            zone = zone.replace(/,\s*$/, "");
             if (zone != "") {
                 writeStringGymsGeofences(data_element, zone);
             }
