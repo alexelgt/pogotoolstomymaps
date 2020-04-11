@@ -105,23 +105,6 @@ If you include a geofences file, the column with zones will be filled in with th
 # Known issues
 
 1. If you upload an empy file from Pogo Tools or none of your portals are inside any geofence the kml file won't upload to My Maps.
-***
-# **Python script**
-This script won't be updated anymore. Use the webpage of the JavaScript script
-## **How to use**
-To run the code type ```python3 pogotoolstomymaps.py importportals.json language```
-
-Where:
-* importportals.json: file with the exported data from Pogo Tools.
-
-* language: language for the output data in the kml file.
-    * Accepted values: en (English), es (Spanish).
-
-If the file is run with one input, language is set to English (en).
-
-If the code is run without inputs, language is se to English (en) and the code will try to use the file _importportals.json_ as input.
-
-If you type ```python3 pogotoolstomymaps.py -h``` the code will show how to use the script (but it will tell what's been explained before).
 
 # **References**
 
