@@ -126,45 +126,72 @@ function write_string_csv(data_element, data_name, data_value) {
 
 function write_string_core(data, data_geofences, write_string_function) {
     var file_string = ""
-
-    data_keys = []
-
     Object.keys(data).forEach(function (data_key) {
-        if (data_key != "nothpwu" && data_key != "notpogo" && data_key != "ignoredCellsExtraGyms" && data_key != "ignoredCellsMissingGyms") {
-            data_keys.push(data_key)
-        }
-    })
+        if (data_key != "nothpwu" && data_key != "notpogo" && data_key != "ignoredCellsExtraGyms" && data_key != "ignoredCellsMissingGyms" && data_key != "gyms") {
+            Object.keys(data[data_key]).forEach(function (data_id) {
+                data_element = data[data_key][data_id]
 
-    data_keys.sort().reverse()
-
-    data_keys.forEach(function (data_key) {
-        Object.keys(data[data_key]).forEach(function (data_id) {
-            data_element = data[data_key][data_id]
-
-            if (data_key == "gyms") {
-                if ("isEx" in data_element) {
-                    if ((language_mode) == "Spanish") {
-                        data_value = portal_strings[data_key][language_mode] + " EX"
+                if (data_key == "gyms") {
+                    if ("isEx" in data_element) {
+                        if ((language_mode) == "Spanish") {
+                            data_value = portal_strings[data_key][language_mode] + " EX"
+                        }
+                        else {
+                            data_value = "EX " + portal_strings[data_key][language_mode]
+                        }
                     }
                     else {
-                        data_value = "EX " + portal_strings[data_key][language_mode]
+                        data_value = portal_strings[data_key][language_mode]
+                    }
+                }
+                else if (data_key == "inns") {
+                    if ((language_mode) == "Spanish") {
+                        data_value = portal_strings[data_key][language_mode] + " " + translate_colors[data_element['color']]
+                    }
+                    else {
+                        data_value = data_element['color'] + " " + portal_strings[data_key][language_mode]
                     }
                 }
                 else {
                     data_value = portal_strings[data_key][language_mode]
                 }
-            }
-            else if (data_key == "inns") {
-                if ((language_mode) == "Spanish") {
-                    data_value = portal_strings[data_key][language_mode] + " " + translate_colors[data_element['color']]
+
+
+                if (data_geofences == undefined) {
+                    file_string += write_string_function(data_element, language_strings["data_name"][language_mode], data_value)
                 }
                 else {
-                    data_value = data_element['color'] + " " + portal_strings[data_key][language_mode]
+                    var ingeofence_pokestop_kml = false
+                    Object.keys(data_geofences).forEach(function (data_geofences_element) {
+                        if ( data_geofences[data_geofences_element]['enable'] == "yes" && ( (data_geofences[data_geofences_element]['format'] == "lnglat" && turf.booleanPointInPolygon(turf.point([data_element['lng'], data_element['lat']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) ) || (data_geofences[data_geofences_element]['format'] == "latlng" && turf.booleanPointInPolygon(turf.point([data_element['lat'], data_element['lng']]), turf.polygon([data_geofences[data_geofences_element]['geofence']])) ) ) ) {
+                            ingeofence_pokestop_kml = true
+                        }
+                    })
+                    if (ingeofence_pokestop_kml == true) {
+                        file_string += write_string_function(data_element, language_strings["data_name"][language_mode], data_value)
+                    }
+                }
+            })
+        }
+    })
+
+    if ("gyms" in data) {
+        Object.keys(data["gyms"]).forEach(function (data_id) {
+            data_element = data["gyms"][data_id]
+
+            
+            if ("isEx" in data_element) {
+                if ((language_mode) == "Spanish") {
+                    data_value = portal_strings["gyms"][language_mode] + " EX"
+                }
+                else {
+                    data_value = "EX " + portal_strings["gyms"][language_mode]
                 }
             }
             else {
-                data_value = portal_strings[data_key][language_mode]
+                data_value = portal_strings["gyms"][language_mode]
             }
+            
 
 
             if (data_geofences == undefined) {
@@ -182,7 +209,7 @@ function write_string_core(data, data_geofences, write_string_function) {
                 }
             }
         })
-    })
+    }
 
     return file_string
 }
